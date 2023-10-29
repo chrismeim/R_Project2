@@ -120,13 +120,106 @@ selected_stock %>%
   kable(caption = "Stock with the lowest return in the 80% decile for March 2023")  
 '''
 
+Consider only the month of January 2023, and create decile groups
+'''{}
+january_2023_data <- monthlyMaxReturns %>%
+  filter(year(datadate) == 2023 & month(datadate) == 1)
 
+january_2023_data <- january_2023_data %>%
+  mutate(
+    deciles = cut(
+      return,
+      breaks = quantile(
+        return,
+        probs = seq(0, 1, by = 0.1),
+        type = 5,
+        na.rm = TRUE
+      ),
+      include.lowest = TRUE,
+      labels = paste0(seq(10, 100, by = 10), "%")
+    )
+  )
+january_2023_data
+'''
+Choose the stock matching the following criteria: - highest return in the 20% decile group
+'''{}
+selected_stock <- january_2023_data %>%
+  filter(deciles == "20%") %>%
+  arrange(desc(return)) %>%
+  head(1)
 
+selected_stock %>%
+  select(GVKEY, iid, datadate, conm, volume = cshtrd, closing_price = prccd, return, deciles) %>%
+  kable(caption = "Stock with the highest return in the 20% decile for January 2023")
+'''
 
+Consider only the month of December 2022, and create decile groups.
+'''{}
+december_2022_data <- monthlyMaxReturns %>%
+  filter(year(datadate) == 2022 & month(datadate) == 12)
 
+december_2022_data <- december_2022_data %>%
+  mutate(
+    deciles = cut(
+      return,
+      breaks = quantile(
+        return,
+        probs = seq(0, 1, by = 0.1),
+        type = 5,
+        na.rm = TRUE
+      ),
+      include.lowest = TRUE,
+      labels = paste0(seq(10, 100, by = 10), "%")
+    )
+  )
+december_2022_data
+'''
 
+Choose the stock matching the following criteria: - highest return in the 60% decile group
+'''{}
+selected_stock <- december_2022_data %>%
+  filter(deciles == "60%") %>%
+  arrange(desc(return)) %>%
+  head(1)
 
+selected_stock %>%
+  select(GVKEY, iid, datadate, conm, volume = cshtrd, closing_price = prccd, return, deciles) %>%
+  kable(caption = "Stock with the highest return in the 60% decile for December 2022")
+'''
 
+Consider only the month of November 2022, and create decile groups.
+'''{}
+november_2022_data <- monthlyMaxReturns %>%
+  filter(year(datadate) == 2022 & month(datadate) == 11)
+
+november_2022_data <- november_2022_data %>%
+  mutate(
+    deciles = cut(
+      return,
+      breaks = quantile(
+        return,
+        probs = seq(0, 1, by = 0.1),
+        type = 5,
+        na.rm = TRUE
+      ),
+      include.lowest = TRUE,
+      labels = paste0(seq(10, 100, by = 10), "%")
+    )
+  )
+november_2022_data
+'''
+
+Choose the stock matching the following criteria: - lowest return in the 30% decile group
+'''{}
+selected_stock <- november_2022_data %>%
+  filter(deciles == "30%") %>%
+  arrange(return) %>%
+  head(1)
+
+selected_stock %>%
+  select(GVKEY, iid, datadate, conm, volume = cshtrd, closing_price = prccd, return, deciles) %>%
+  kable(caption = "Stock with the lowest return in the 30% decile for November 2022")
+'''
 
 
 
